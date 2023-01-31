@@ -1,7 +1,7 @@
 const path = require('path')
 
 module.exports = {
-  entry: './pytket/circuit/offline_display/src/index.js',
+  entry: './pytket/circuit/offline_display/js/index.js',
   mode: 'production',
   output: {
     filename: 'main.js',

@@ -13,6 +13,3 @@ circ.measure_all()
 
 render_circuit_jupyter(circ)
 ```
-
-The offline display module contains its own copy of the circuit render,
-so you can render circuits without needing an internet connection.

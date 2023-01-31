@@ -12,124 +12,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Display a circuit as html."""
+"""Display a circuit as html locally."""
 
-import json
 import os
-import tempfile
-import time
-import uuid
-import webbrowser
-from typing import Dict, Optional, Union, cast
-
-from jinja2 import nodes, FileSystemLoader, ChoiceLoader, Environment
-from jinja2.ext import Extension
-from jinja2.utils import markupsafe
-from jinja2.parser import Parser
+from jinja2 import PrefixLoader, FileSystemLoader, ChoiceLoader, Environment
 
 from pytket.circuit import Circuit  # type: ignore
+from pytket.circuit.display import (
+    IncludeRawExtension,
+    CircuitRenderer,
+    html_loader,
+    js_loader,
+)
+
 
 # Set up jinja to access our templates
 dirname = os.path.dirname(__file__)
-static_dirname = os.path.join(dirname, "static")
-display_dirname = os.path.join(dirname, "dist")
 
+# Loader falls back on base display module if not overriden.
+loader = PrefixLoader({
+    'html': ChoiceLoader([
+        FileSystemLoader(searchpath=os.path.join(dirname, "static")),
+        html_loader,
+    ]),
+    'js': ChoiceLoader([
+        FileSystemLoader(searchpath=os.path.join(dirname, "dist")),
+        js_loader
+    ])
+})
 
-# js scripts to be loaded must not be parsed as template files.
-class IncludeRawExtension(Extension):
-    tags = {"include_raw"}
-
-    def parse(self, parser: Parser) -> nodes.Output:
-        lineno = parser.stream.expect("name:include_raw").lineno
-        template = parser.parse_expression()
-        result = self.call_method("_render", [template], lineno=lineno)
-        return nodes.Output([result], lineno=lineno)
-
-    def _render(self, filename: str) -> markupsafe.Markup:
-        if self.environment.loader is not None:
-            return markupsafe.Markup(
-                self.environment.loader.get_source(self.environment, filename)[0]
-            )
-        else:
-            return markupsafe.Markup("")
-
-
-local_loader = FileSystemLoader(searchpath=static_dirname)
-dist_loader = FileSystemLoader(searchpath=display_dirname)
 env = Environment(
-    loader=ChoiceLoader([local_loader, dist_loader]), extensions=[IncludeRawExtension]
+    loader=loader, extensions=[IncludeRawExtension]
 )
 
-RenderCircuit = Union[Dict[str, Union[str, float, dict]], Circuit]
+# Expose the rendering methods with the local jinja env.
+circuit_renderer = CircuitRenderer(env)
 
-
-def render_circuit_as_html(
-    circuit: RenderCircuit,
-    jupyter: bool = False,
-) -> Optional[str]:
-    """
-    Render a circuit as HTML for inline display.
-
-    :param circuit: the circuit to render.
-    :param jupyter: set to true to render generated HTML in cell output.
-    """
-    if not isinstance(circuit, Circuit):
-        circuit = Circuit.from_dict(circuit)
-
-    uid = uuid.uuid4()
-    html_template = env.get_template("circuit.html")
-    html = html_template.render(
-        {
-            "circuit_json": json.dumps(circuit.to_dict()),
-            "uid": uid,
-            "jupyter": jupyter,
-        }
-    )
-    if jupyter:
-        # If we are in a notebook, we can tell jupyter to display the html.
-        # We don't import at the top in case we are not in a notebook environment.
-        from IPython.display import (  # type: ignore
-            HTML,
-            display,
-        )  # pylint: disable=C0415
-
-        display(HTML(html))
-        return None
-
-    return html
-
-
-def render_circuit_jupyter(
-    circuit: RenderCircuit,
-) -> None:
-    """Render a circuit as jupyter cell output.
-
-    :param circuit: the circuit to render.
-    """
-    render_circuit_as_html(circuit, True)
-
-
-def view_browser(circuit: RenderCircuit, browser_new: int = 2, sleep: int = 5) -> None:
-    """Write circuit render html to a tempfile and open in browser.
-
-    Waits for some time for browser to load then deletes tempfile.
-
-    :param circuit: the Circuit or serialized Circuit to render.
-    :param browser_new: ``new`` parameter to ``webbrowser.open``, default 2.
-    :param sleep: Number of seconds to sleep before deleting file, default 5.
-
-    """
-
-    fp = tempfile.NamedTemporaryFile(
-        mode="w", suffix=".html", delete=False, dir=os.getcwd()
-    )
-    try:
-        fp.write(cast(str, render_circuit_as_html(circuit)))
-        fp.close()
-
-        webbrowser.open("file://" + os.path.realpath(fp.name), new=browser_new)
-
-        # give browser enough time to open before deleting file
-        time.sleep(sleep)
-    finally:
-        os.remove(fp.name)
+render_circuit_as_html = circuit_renderer.render_circuit_as_html
+render_circuit_jupyter = circuit_renderer.render_circuit_jupyter
+view_browser = circuit_renderer.view_browser
