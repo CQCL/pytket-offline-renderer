@@ -1,11 +1,11 @@
 const path = require('path')
 
 module.exports = {
-  entry: './pytket/circuit/offline_display/js/index.js',
+  entry: './pytket/extensions/offline_display/js/index.js',
   mode: 'production',
   output: {
     filename: 'main.js',
-    path: path.resolve(__dirname, 'pytket/circuit/offline_display/dist'),
+    path: path.resolve('./pytket/extensions/offline_display/dist'),
   },
   module: {
     rules: [
