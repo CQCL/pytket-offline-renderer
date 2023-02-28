@@ -42,7 +42,7 @@ setup(
     name="pytket-offline-display",
     author="TKET development team",
     author_email="tket-support@cambridgequantum.com",
-    python_requires=">=3.8",
+    python_requires=">=3.9",
     project_urls={
         "Documentation": "https://cqcl.github.io/tket/pytket/api/index.html",
         "Source": "https://github.com/CQCL/tket",
@@ -62,9 +62,9 @@ setup(
     },
     include_package_data=True,
     zip_safe=False,
-    # use_scm_version={
-    #     "root": os.path.dirname(setup_dir),
-    #     "write_to": os.path.join(setup_dir, "pytket", "_version.py"),
-    #     "write_to_template": "__version__ = '{version}'",
-    # },
+    use_scm_version={
+        "root": os.path.dirname(setup_dir),
+        "write_to": os.path.join(setup_dir, "pytket", "_version.py"),
+        "write_to_template": "__version__ = '{version}'",
+    },
 )
