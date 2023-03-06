@@ -1,9 +1,10 @@
 # Pytket-offline-renderer
 
 This [pytket](https://github.com/CQCL/pytket) extension package provides offline circuit rendering functionality.
-To use, simply replace the usual `pytket.circuit.display` import with `pytket.circuit.offline_display`, for example:
+To use, simply replace the usual `pytket.circuit.display` import with `pytket.extensions.offline_display`, for example:
+
 ```python
-from pytket.circuit.offline_display import render_circuit_jupyter
+from pytket.extensions.offline_display import render_circuit_jupyter
 from pytket import Circuit
 
 circ = Circuit(2,2)

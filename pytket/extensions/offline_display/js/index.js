@@ -10,8 +10,11 @@ function displayCircuit () {
     components: { CircuitDisplayContainer },
   })
   app.config.unwrapInjectedRef = true
-  app.mount('#circuit-display-vue-container')
+  app.mount('#circuit-display-vue-container-'+circuitRendererUid)
   return app
 }
 
-displayCircuit()
+if (typeof window.pytketCircuitDisplays === "undefined") {
+    window.pytketCircuitDisplays = {};
+}
+window.pytketCircuitDisplays[circuitRendererUid] = displayCircuit()

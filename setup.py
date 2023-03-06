@@ -19,9 +19,6 @@ from setuptools import setup
 from setuptools.command.build_py import build_py
 
 
-setup_dir = os.path.abspath(os.path.dirname(__file__))
-
-
 class NPMBuild(build_py):
     def run(self):
         # Build the circuit renderer app for (offline) inclusion within pytket.
@@ -43,7 +40,7 @@ setup(
     author="TKET development team",
     author_email="tket-support@cambridgequantum.com",
     python_requires=">=3.9",
-    version="0.0.1",
+    version="0.0.2",
     project_urls={
         "Documentation": "https://cqcl.github.io/tket/pytket/api/index.html",
         "Source": "https://github.com/CQCL/pytket-offline-renderer",
@@ -53,10 +50,10 @@ setup(
     long_description=open("readme.md", "r").read(),
     long_description_content_type="text/markdown",
     license="Apache 2",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_namespace_packages(),
     install_requires=[
         "jinja2 ~= 3.0",
-        "pytket ~= 1.11",
+        "pytket > 1.11.1",
     ],
     cmdclass={
         "build_py": NPMBuild,
