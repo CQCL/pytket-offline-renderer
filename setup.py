@@ -43,8 +43,8 @@ setup(
     version="0.0.2",
     project_urls={
         "Documentation": "https://cqcl.github.io/tket/pytket/api/index.html",
-        "Source": "https://github.com/CQCL/tket",
-        "Tracker": "https://github.com/CQCL/tket/issues",
+        "Source": "https://github.com/CQCL/pytket-offline-renderer",
+        "Tracker": "https://github.com/CQCL/pytket-offline-renderer/issues",
     },
     description="Python module for displaying pytket circuits when offline.",
     long_description=open("readme.md", "r").read(),
