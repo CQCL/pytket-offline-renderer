@@ -40,7 +40,7 @@ setup(
     author="TKET development team",
     author_email="tket-support@cambridgequantum.com",
     python_requires=">=3.9",
-    version="0.0.4",
+    version="0.0.5",
     project_urls={
         "Documentation": "https://cqcl.github.io/tket/pytket/api/index.html",
         "Source": "https://github.com/CQCL/pytket-offline-renderer",
