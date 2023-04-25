@@ -45,9 +45,14 @@ env = Environment(
     loader=loader, extensions=[IncludeRawExtension]
 )
 
-# Expose the rendering methods with the local jinja env.
-circuit_renderer = CircuitRenderer(env)
 
-render_circuit_as_html = circuit_renderer.render_circuit_as_html
-render_circuit_jupyter = circuit_renderer.render_circuit_jupyter
-view_browser = circuit_renderer.view_browser
+def get_circuit_renderer():
+    """Get a configurable instance of the circuit renderer."""
+    return CircuitRenderer(env)
+
+
+# Expose the rendering methods with the local jinja env.
+_default_circuit_renderer = get_circuit_renderer()
+render_circuit_as_html = _default_circuit_renderer.render_circuit_as_html
+render_circuit_jupyter = _default_circuit_renderer.render_circuit_jupyter
+view_browser = _default_circuit_renderer.view_browser
