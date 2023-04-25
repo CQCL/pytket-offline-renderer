@@ -53,7 +53,7 @@ setup(
     packages=setuptools.find_namespace_packages(),
     install_requires=[
         "jinja2 ~= 3.0",
-        "pytket > 1.11.1",
+        "pytket >= 1.15.0",
     ],
     cmdclass={
         "build_py": NPMBuild,
