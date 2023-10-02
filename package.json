@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "pytket-circuit-renderer": "^0.6.1",
+    "pytket-circuit-renderer": "^0.7",
     "vue": "^3.2.45"
   },
   "name": "pytket-offline-display",
