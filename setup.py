@@ -40,7 +40,7 @@ setup(
     author="TKET development team",
     author_email="tket-support@cambridgequantum.com",
     python_requires=">=3.9",
-    version="0.0.5",
+    version="0.0.6",
     project_urls={
         "Documentation": "https://cqcl.github.io/tket/pytket/api/index.html",
         "Source": "https://github.com/CQCL/pytket-offline-renderer",
@@ -53,7 +53,7 @@ setup(
     packages=setuptools.find_namespace_packages(),
     install_requires=[
         "jinja2 ~= 3.0",
-        "pytket >= 1.15.0",
+        "pytket >= 1.20.0",
     ],
     cmdclass={
         "build_py": NPMBuild,
