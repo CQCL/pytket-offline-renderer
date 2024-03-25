@@ -27,7 +27,7 @@ If you want to control the default options, you can instead load a configurable 
 from pytket.extensions.offline_display import get_circuit_renderer
 
 circuit_renderer = get_circuit_renderer()
-circuit_renderer.set_display_options(zx_style=False)  # set the default options.
+circuit_renderer.set_render_options(zx_style=False)  # set the default options.
 circuit_renderer.dark_mode = True  # You can also set them directly.
 
 circuit_renderer.render_circuit_jupyter(circ)
