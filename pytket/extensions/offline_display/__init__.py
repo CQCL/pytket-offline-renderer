@@ -20,6 +20,7 @@ from jinja2 import PrefixLoader, FileSystemLoader, ChoiceLoader, Environment
 from pytket.circuit import Circuit  # type: ignore
 from pytket.circuit.display import (
     IncludeRawExtension,
+    CircuitDisplayConfig,
     CircuitRenderer,
     html_loader,
     js_loader,
@@ -45,10 +46,15 @@ env = Environment(
     loader=loader, extensions=[IncludeRawExtension]
 )
 
+def get_circuit_renderer(config: CircuitDisplayConfig | None = None) -> CircuitRenderer:
+    """
+    Get a configurable instance of the circuit renderer.
+    :param config: CircuitDisplayConfig to control the default render options.
+    """
+    if config is None:
+        config = CircuitDisplayConfig.from_default_config_file()
 
-def get_circuit_renderer():
-    """Get a configurable instance of the circuit renderer."""
-    return CircuitRenderer(env)
+    return CircuitRenderer(env, config)
 
 
 # Expose the rendering methods with the local jinja env.

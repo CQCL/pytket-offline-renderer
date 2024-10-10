@@ -1,11 +1,11 @@
 {
   "dependencies": {
-    "pytket-circuit-renderer": "^0.9.0",
+    "pytket-circuit-renderer": "^0.10.2",
     "vue": "^3.2.45"
   },
   "name": "pytket-offline-display",
   "description": "## Circuit renderer component from within pytket.",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "private": true,
   "scripts": {
     "build": "webpack",
